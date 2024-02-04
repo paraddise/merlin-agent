@@ -102,6 +102,8 @@ mips:
 arm:
 	export GOOS=linux;export GOARCH=arm;export GOARM=7;go build -trimpath ${LDFLAGS} ${GCFLAGS} ${ASMFLAGS} -o ${DIR}/${MAGENT}-${A} ./main.go
 
+docker-linux:
+	docker build -t merlin-agent:${VERSION}-linux -f Dockerfile.linux .
 # Compile Agent - Linux x64
 linux:
 	export GOOS=linux;export GOARCH=amd64;go build -trimpath ${LDFLAGS} ${GCFLAGS} ${ASMFLAGS} -o ${DIR}/${MAGENT}-${L} ./main.go

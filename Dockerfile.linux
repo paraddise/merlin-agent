@@ -1,0 +1,15 @@
+# ARG RESULT_IMAGE="gcr.io/distroless/static-debian12"
+ARG RESULT_IMAGE="alpine:3.19"
+ARG BUILD_IMAGE="golang:1.20"
+
+FROM ${BUILD_IMAGE} as build
+ARG BIN_PATH="/*/*/merlinAgent-Linux-x64"
+COPY . /app
+WORKDIR /app
+RUN GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -trimpath -o bin/merlinAgent ./main.go
+
+FROM ${RESULT_IMAGE}
+
+COPY --from=build /app/bin/merlinAgent /usr/bin/merlinAgent
+
+ENTRYPOINT [ "/usr/bin/merlinAgent" ]
